@@ -1,0 +1,53 @@
+<idea-plugin>
+    <id>dev.codex.apple-music-controls</id>
+    <name>Apple Music Controls</name>
+    <vendor email="local@example.com">Codex</vendor>
+
+    <description><![CDATA[
+        Control Apple Music from IntelliJ IDEA on macOS.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup
+            id="Apple Music Controls"
+            displayType="BALLOON"
+            isLogByDefault="true"/>
+        <toolWindow
+            id="Apple Music"
+            anchor="right"
+            factoryClass="dev.codex.applemusic.AppleMusicToolWindowFactory"/>
+    </extensions>
+
+    <actions>
+        <group id="dev.codex.applemusic.Group"
+               text="Apple Music"
+               description="Control Apple Music"
+               popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+
+            <action id="dev.codex.applemusic.PlayPause"
+                    class="dev.codex.applemusic.PlayPauseAction"
+                    text="Play/Pause"
+                    description="Toggle Apple Music playback"/>
+
+            <action id="dev.codex.applemusic.NextTrack"
+                    class="dev.codex.applemusic.NextTrackAction"
+                    text="Next Track"
+                    description="Skip to the next Apple Music track"/>
+
+            <action id="dev.codex.applemusic.PreviousTrack"
+                    class="dev.codex.applemusic.PreviousTrackAction"
+                    text="Previous Track"
+                    description="Go back to the previous Apple Music track"/>
+
+            <separator/>
+
+            <action id="dev.codex.applemusic.CurrentTrack"
+                    class="dev.codex.applemusic.CurrentTrackAction"
+                    text="Show Current Track"
+                    description="Show the current Apple Music track"/>
+        </group>
+    </actions>
+</idea-plugin>
