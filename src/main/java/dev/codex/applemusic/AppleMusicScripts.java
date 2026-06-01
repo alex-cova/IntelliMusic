@@ -42,7 +42,7 @@ final class AppleMusicScripts {
         """;
 
     static final String STATUS = """
-        set separator to ASCII character 9
+        set separator to character id 9
 
         on safeText(valueText)
             try
@@ -67,7 +67,11 @@ final class AppleMusicScripts {
             set trackName to my safeText(name of current track)
             set artistName to my safeText(artist of current track)
             set albumName to my safeText(album of current track)
-            set playlistName to my safeText(name of current playlist)
+            try
+                set playlistName to my safeText(name of current playlist)
+            on error
+                set playlistName to ""
+            end try
             set positionSeconds to player position
             set durationSeconds to duration of current track
 
@@ -76,7 +80,7 @@ final class AppleMusicScripts {
         """;
 
     static final String CURRENT_PLAYLIST_TRACKS = """
-        set lineFeed to ASCII character 10
+        set lineFeed to character id 10
 
         on safeText(valueText)
             try
@@ -94,7 +98,19 @@ final class AppleMusicScripts {
         tell application "Music"
             if player state is stopped then return ""
 
-            set playlistTracks to tracks of current playlist
+            try
+                set playlistTracks to tracks of current playlist
+            on error
+                try
+                    set playlistTracks to tracks of playlist "Continue Playing"
+                on error
+                    try
+                        set playlistTracks to tracks of user playlist "Continue Playing"
+                    on error
+                        return ""
+                    end try
+                end try
+            end try
             set currentDatabaseId to database ID of current track
             set trackCount to count of playlistTracks
             set currentIndex to 1

@@ -17,7 +17,7 @@ record AppleMusicStatus(
 
     static AppleMusicStatus parse(String output) {
         String[] parts = output.split("\\t", -1);
-        if (parts.length < 7) {
+        if (parts.length < 6) {
             return empty("unknown");
         }
 
@@ -28,7 +28,7 @@ record AppleMusicStatus(
             parts[3],
             parseDouble(parts[4]),
             parseDouble(parts[5]),
-            parts[6]
+            parts.length > 6 ? parts[6] : ""
         );
     }
 

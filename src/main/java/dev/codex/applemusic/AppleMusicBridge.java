@@ -52,7 +52,9 @@ final class AppleMusicBridge {
                 throw new AppleMusicException("Apple Music did not respond in time.");
             }
 
-            String stdout = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8).trim();
+            String stdout = stripTrailingLineBreaks(
+                new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8)
+            );
             String stderr = new String(process.getErrorStream().readAllBytes(), StandardCharsets.UTF_8).trim();
 
             if (process.exitValue() != 0) {
@@ -73,6 +75,18 @@ final class AppleMusicBridge {
             .getNotificationGroup(NOTIFICATION_GROUP_ID)
             .createNotification(title, StringUtil.escapeXmlEntities(content), type)
             .notify(project);
+    }
+
+    private static String stripTrailingLineBreaks(String value) {
+        int end = value.length();
+        while (end > 0) {
+            char character = value.charAt(end - 1);
+            if (character != '\n' && character != '\r') {
+                break;
+            }
+            end--;
+        }
+        return value.substring(0, end);
     }
 
     private static final class AppleMusicException extends Exception {
